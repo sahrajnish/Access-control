@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1014152230745",
+    "project_id": "access-control-2bd8f",
+    "storage_bucket": "access-control-2bd8f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014152230745:android:17fda958fffd6ff3ee7e48",
+        "android_client_info": {
+          "package_name": "com.example.accesscontrol"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyDWc3sL5i4JJ3eQtEhxpJVRT8fmeMbNU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
