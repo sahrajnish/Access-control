@@ -1,4 +1,4 @@
-package com.example.accesscontrol.presentation.util
+package com.example.accesscontrol.feature_app.presentation.util
 
 sealed class Screens(val route: String) {
     object WelcomeScreen: Screens(route = "welcome_screen")

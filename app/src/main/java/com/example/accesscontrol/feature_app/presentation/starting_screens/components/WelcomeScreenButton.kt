@@ -1,4 +1,4 @@
-package com.example.accesscontrol.presentation.welcome_screens.components
+package com.example.accesscontrol.feature_app.presentation.starting_screens.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

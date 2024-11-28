@@ -1,4 +1,4 @@
-package com.example.accesscontrol.presentation.welcome_screens
+package com.example.accesscontrol.feature_app.presentation.starting_screens.register_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
@@ -27,12 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.accesscontrol.presentation.util.Screens
-import com.example.accesscontrol.presentation.welcome_screens.components.AppTextField
+import com.example.accesscontrol.feature_app.presentation.util.Screens
+import com.example.accesscontrol.feature_app.presentation.starting_screens.components.AppTextField
 
 @Composable
 fun RegisterScreen(
-    viewModel: WelcomeScreenViewModel = hiltViewModel(),
+    viewModel: RegisterViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
     val registerState = viewModel.state.value.isRegisterSuccess
@@ -84,7 +83,7 @@ fun RegisterScreen(
                 value = viewModel.state.value.email,
                 label = "Email",
                 onValueChange = {
-                    viewModel.onEvent(WelcomeScreensEvents.EnteredEmail(it))
+                    viewModel.onEvent(RegisterScreenEvents.EnteredEmail(it))
                 }
             )
             AppTextField(
@@ -92,14 +91,14 @@ fun RegisterScreen(
                 label = "Password",
                 transformText = PasswordVisualTransformation(),
                 onValueChange = {
-                    viewModel.onEvent(WelcomeScreensEvents.EnteredPassword(it))
+                    viewModel.onEvent(RegisterScreenEvents.EnteredPassword(it))
                 },
                 keyboardActions = KeyboardActions(onDone = KeyboardActions.Default.onDone)
             )
             Spacer(Modifier.height(8.dp))
             Button(
                 onClick = {
-                    viewModel.onEvent(WelcomeScreensEvents.RegisterClicked)
+                    viewModel.onEvent(RegisterScreenEvents.RegisterClicked)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

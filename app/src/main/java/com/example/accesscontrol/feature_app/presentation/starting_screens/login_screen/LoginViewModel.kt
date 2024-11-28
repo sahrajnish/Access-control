@@ -1,68 +1,55 @@
-package com.example.accesscontrol.presentation.welcome_screens
+package com.example.accesscontrol.feature_app.presentation.starting_screens.login_screen
 
-import android.util.Log
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.accesscontrol.presentation.AppEvents
 import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WelcomeScreenViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ): ViewModel() {
-    private val _state = mutableStateOf(TextFieldState())
-    val state: State<TextFieldState> = _state
+    private val _state = mutableStateOf(LoginScreenState())
+    val state = _state
 
-    fun onEvent(event: WelcomeScreensEvents) {
+    fun onEvent(event: LoginScreenEvents) {
         when(event) {
-            is WelcomeScreensEvents.EnteredEmail -> {
+            is LoginScreenEvents.EnteredEmail -> {
                 _state.value = state.value.copy(
                     email = event.value
                 )
             }
-            is WelcomeScreensEvents.EnteredPassword -> {
+            is LoginScreenEvents.EnteredPassword -> {
                 _state.value = state.value.copy(
                     password = event.value
                 )
             }
-            is WelcomeScreensEvents.LoginClicked -> {
+            is LoginScreenEvents.LoginClicked -> {
                 viewModelScope.launch {
                     _state.value = state.value.copy(
                         isLoading = true
                     )
-                    authenticateUser(state.value.email, state.value.password)
+                    authenticateUser(email = state.value.email, password = state.value.password)
                 }
             }
-
-            is WelcomeScreensEvents.RegisterClicked -> {
-                viewModelScope.launch {
-                    _state.value = state.value.copy(
-                        isLoading = true
-                    )
-                    registerUser(state.value.email, state.value.password)
-                }
-            }
-
-            is WelcomeScreensEvents.ResetPassword -> {
+            is LoginScreenEvents.ResetPassword -> {
                 viewModelScope.launch {
                     _state.value = state.value.copy(
                         isLoading = true,
                         error = null
                     )
-                    resetPassword(state.value.email)
+                    resetPassword(email = state.value.email)
                 }
             }
         }
     }
 
     private fun authenticateUser(email: String, password: String) {
-        if(!isEmailValid(email)) {
+        if(!isEmailValid(state.value.email)) {
             _state.value = state.value.copy(
                 isLoading = false,
                 error = "Invalid email format"
@@ -86,48 +73,11 @@ class WelcomeScreenViewModel @Inject constructor(
                         error = null,
                         isLoginSuccess = true
                     )
-                    Log.d("home", "homeScreen")
-                    Log.d("home", "${state.value.isLoginSuccess}")
                 } else {
                     _state.value = state.value.copy(
                         isLoading = false,
                         isLoginSuccess = false,
                         error = task.exception?.message ?: "Login failed. Please try again."
-                    )
-                }
-            }
-    }
-
-    private fun registerUser(email: String, password: String) {
-        if(!isEmailValid(email)) {
-            _state.value = state.value.copy(
-                isLoading = false,
-                error = "Invalid email format"
-            )
-            return
-        }
-
-        if(!isPasswordValid(password)) {
-            _state.value = state.value.copy(
-                isLoading = false,
-                error = "Password must be at least 8 characters"
-            )
-            return
-        }
-
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task->
-                if (task.isSuccessful) {
-                    _state.value = state.value.copy(
-                        isLoading = false,
-                        isRegisterSuccess = true,
-                        isLoginSuccess = true,
-                        error = null
-                    )
-                } else {
-                    _state.value = state.value.copy(
-                        isLoading = false,
-                        error = task.exception?.message ?: "Something went wrong. Please try again."
                     )
                 }
             }

@@ -1,4 +1,4 @@
-package com.example.accesscontrol.presentation
+package com.example.accesscontrol.feature_app.presentation
 
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -7,19 +7,25 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.accesscontrol.presentation.util.Screens
-import com.example.accesscontrol.presentation.welcome_screens.LoginScreen
-import com.example.accesscontrol.presentation.welcome_screens.RegisterScreen
-import com.example.accesscontrol.presentation.welcome_screens.WelcomeScreen
+import com.example.accesscontrol.feature_app.presentation.main_screens.HomeScreen
+import com.example.accesscontrol.feature_app.presentation.util.Screens
+import com.example.accesscontrol.feature_app.presentation.starting_screens.login_screen.LoginScreen
+import com.example.accesscontrol.feature_app.presentation.starting_screens.register_screen.RegisterScreen
+import com.example.accesscontrol.feature_app.presentation.starting_screens.welcome_screen.WelcomeScreen
+import com.google.firebase.auth.FirebaseUser
 
 @Composable
 fun NavigateScreens(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    currentUser: FirebaseUser?
 ) {
-
     NavHost(
         navController = navHostController,
-        startDestination = Screens.WelcomeScreen.route,
+        startDestination = if (currentUser != null) {
+            Screens.HomeScreen.route
+        } else {
+            Screens.WelcomeScreen.route
+        },
         enterTransition = {
             fadeIn(animationSpec = tween(10))
         },

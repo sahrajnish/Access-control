@@ -1,4 +1,4 @@
-package com.example.accesscontrol.presentation.welcome_screens
+package com.example.accesscontrol.feature_app.presentation.starting_screens.login_screen
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
@@ -25,19 +24,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.accesscontrol.presentation.util.Screens
-import com.example.accesscontrol.presentation.welcome_screens.components.AppTextField
+import com.example.accesscontrol.feature_app.presentation.util.Screens
+import com.example.accesscontrol.feature_app.presentation.starting_screens.components.AppTextField
 
 @Composable
 fun LoginScreen(
-    viewModel: WelcomeScreenViewModel = hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
+    Log.d("inspect", "Inside login screen")
     val loginState = viewModel.state.value.isLoginSuccess
     LaunchedEffect(loginState) {
         if (loginState) {
@@ -88,21 +87,21 @@ fun LoginScreen(
                 value = viewModel.state.value.email,
                 label = "Email",
                 onValueChange = {
-                    viewModel.onEvent(WelcomeScreensEvents.EnteredEmail(it))
+                    viewModel.onEvent(LoginScreenEvents.EnteredEmail(it))
                 }
             )
             AppTextField(
                 value = viewModel.state.value.password,
                 label = "Password",
                 onValueChange = {
-                    viewModel.onEvent(WelcomeScreensEvents.EnteredPassword(it))
+                    viewModel.onEvent(LoginScreenEvents.EnteredPassword(it))
                 },
                 keyboardActions = KeyboardActions(onDone = KeyboardActions.Default.onDone),
                 transformText = PasswordVisualTransformation()
             )
             TextButton(
                 onClick = {
-                    viewModel.onEvent(WelcomeScreensEvents.ResetPassword)
+                    viewModel.onEvent(LoginScreenEvents.ResetPassword)
                 }
             ) {
                 Text(
@@ -111,7 +110,7 @@ fun LoginScreen(
             }
             Button(
                 onClick = {
-                    viewModel.onEvent(WelcomeScreensEvents.LoginClicked)
+                    viewModel.onEvent(LoginScreenEvents.LoginClicked)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
